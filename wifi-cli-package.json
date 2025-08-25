@@ -1,0 +1,22 @@
+{
+  "name": "wifi-cli",
+  "version": "1.0.0",
+  "description": "Modern WiFi management CLI tool - successor to wifimap.bat",
+  "main": "wifi-cli.js",
+  "bin": {
+    "wifi-cli": "./wifi-cli.cmd"
+  },
+  "scripts": {
+    "start": "node wifi-cli.js"
+  },
+  "keywords": ["wifi", "cli", "network", "management", "windows"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.4.1",
+    "inquirer": "^8.2.6",
+    "ora": "^5.4.1",
+    "cli-table3": "^0.6.3"
+  }
+}
