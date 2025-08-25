@@ -1,0 +1,22 @@
+{
+  "name": "rang-cli",
+  "version": "1.0.0",
+  "description": "Advanced sequential file renaming tool with multiple patterns and extensions support",
+  "main": "rang-cli.js",
+  "bin": {
+    "rang-cli": "./rang-cli.cmd"
+  },
+  "scripts": {
+    "start": "node rang-cli.js"
+  },
+  "keywords": ["renaming", "cli", "files", "batch", "sequential"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^9.4.1",
+    "inquirer": "^8.2.6",
+    "ora": "^5.4.1",
+    "cli-table3": "^0.6.3"
+  }
+}
