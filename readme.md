@@ -27,7 +27,10 @@ Collection de commandes batch créées pour faciliter diverses tâches système 
 - **groupfile.bat** - Groupe les fichiers par extension dans des dossiers
 - **groupfile2.bat** - Version alternative de groupfile.bat
 - **rang.bat** - Range les fichiers par extension dans un dossier spécifique
+- **rang-cli** - Outil moderne de renommage séquentiel avec support multi-extensions
 - **manga.bat** - Organise les fichiers média (mp4, mp3, mkv) par nom
+- **dedup** - Détection et suppression intelligente des fichiers dupliqués
+- **test.bat + sup_double.exe** - Système de déduplication par taille et comparaison binaire
 
 ### Gestion système
 - **closeapp.bat** - Ferme plusieurs applications (IDM, MySQL, uTorrent, etc.)
@@ -60,8 +63,52 @@ La plupart des commandes acceptent des paramètres. Utilisez `/help` ou `/?` qua
 
 Exemples d'usage :
 ```batch
+# Outils batch classiques
 elem .                    # Compte les éléments du répertoire courant
 dsize dossier1 dossier2   # Taille de plusieurs dossiers
 wifimap /l                # Liste des réseaux WiFi
 useracc /help             # Aide pour la gestion d'utilisateurs
+
+# Nouveaux outils CLI modernes
+dedup scan Documents      # Scanner les doublons dans Documents
+dedup clean --interactive # Suppression interactive des doublons
+rang-cli rename Photos -e jpg png -m prefixed -t vacation
+                          # Renommer photos avec préfixe "vacation_001.jpg"
+rang-cli preview Downloads -e pdf
+                          # Prévisualiser les PDFs à renommer
+```
+
+## Outils CLI modernes (Node.js)
+
+Le projet inclut désormais des outils CLI modernes développés en Node.js :
+
+### **dedup** - Déduplication intelligente de fichiers
+- **Architecture 2-phases** : Tri par taille puis comparaison binaire optimisée
+- **Interface interactive** : Preview, confirmation, sélection individuelle
+- **Performance** : Comparaison par chunks 64KB pour rapidité maximale
+- **Sécurité** : Preview obligatoire, pas de suppression accidentelle
+
+```bash
+dedup scan [directory]    # Scanner et afficher les doublons
+dedup clean [directory]   # Mode nettoyage interactif
+```
+
+### **rang-cli** - Renommage séquentiel avancé
+- **Multi-extensions** : Traiter txt, pdf, jpg simultanément
+- **4 modes de renommage** : simple (0.txt), padded (001.txt), prefixed (photo_001.jpg), custom
+- **Options de tri** : Par nom, date ou taille
+- **Fonction undo** : Annulation du dernier renommage
+- **Dry-run** : Test sans modification
+
+```bash
+rang-cli rename [dir] -e txt pdf -m prefixed -t document
+rang-cli preview [dir] -e jpg      # Prévisualisation seule
+rang-cli undo                      # Annuler dernier renommage
+```
+
+## Installation des outils CLI
+
+```bash
+# Installation globale (Windows)
+npm install -g .          # Installe dedup et rang-cli globalement
 ```
