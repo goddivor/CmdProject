@@ -41,6 +41,7 @@ Collection de commandes batch créées pour faciliter diverses tâches système 
 
 ### Utilitaires réseau
 - **wifimap.bat** - Gestion des profils WiFi (/l, /k, /d, /?) - liste, clés, suppression
+- **wifi-cli** - Gestionnaire WiFi moderne avec interface colorée et mots de passe visibles
 
 ### Outils spécialisés
 - **col.bat** - Change la couleur de la console (utilise couleur.exe)
@@ -76,6 +77,7 @@ rang-cli rename Photos -e jpg png -m prefixed -t vacation
                           # Renommer photos avec préfixe "vacation_001.jpg"
 rang-cli preview Downloads -e pdf
                           # Prévisualiser les PDFs à renommer
+wifi-cli list             # Voir tous les profils WiFi avec mots de passe
 ```
 
 ## Outils CLI modernes (Node.js)
@@ -106,9 +108,24 @@ rang-cli preview [dir] -e jpg      # Prévisualisation seule
 rang-cli undo                      # Annuler dernier renommage
 ```
 
+### **wifi-cli** - Gestion WiFi moderne
+- **Interface utilisateur améliorée** : Tableaux colorés, spinners, indicateurs visuels
+- **Mots de passe visibles** : Affichage direct sans privilèges administrateur requis
+- **Encodage corrigé** : Support parfait des caractères spéciaux Windows
+- **Recherche et export** : Filtrage par pattern, export JSON
+- **Compatibilité legacy** : Commandes wifimap.bat intégrées
+
+```bash
+wifi-cli list                      # Liste tous les profils avec mots de passe
+wifi-cli show "NomDuWiFi"          # Détails d'un profil spécifique
+wifi-cli search pattern            # Rechercher des profils
+wifi-cli export [fichier.json]     # Exporter les profils
+wifi-cli delete "NomDuWiFi"        # Supprimer un profil
+```
+
 ## Installation des outils CLI
 
 ```bash
 # Installation globale (Windows)
-npm install -g .          # Installe dedup et rang-cli globalement
+npm install -g .          # Installe dedup, rang-cli et wifi-cli globalement
 ```
