@@ -51,6 +51,7 @@ Collection de commandes batch créées pour faciliter diverses tâches système 
 - **treex.bat** - Wrapper UTF-8 pour tree_ex.exe avec options avancées
 - **treex2.bat** - Version alternative de treex.bat
 - **genicon.bat** - Génère des icônes en plusieurs tailles avec ImageMagick
+- **folder-icon-cli** - Changement d'icônes de dossiers avec conversion PNG vers ICO
 
 ### Fichiers de développement/test
 - **test.bat** - Fichier de test
@@ -123,9 +124,25 @@ wifi-cli export [fichier.json]     # Exporter les profils
 wifi-cli delete "NomDuWiFi"        # Supprimer un profil
 ```
 
+### **folder-icon-cli** - Gestionnaire d'icônes de dossiers
+- **Conversion intelligente** : PNG vers ICO automatique avec Sharp
+- **Gestion Windows** : Création desktop.ini et attributs système
+- **Multi-tailles** : Support 16x16 à 256x256 pixels dans un seul ICO
+- **Fichiers invisibles** : ICO et desktop.ini rendus invisibles (+H +S)
+- **Interface moderne** : Options --folder/-f, --icon/-i avec manuel complet
+- **Haute performance** : Aucune limite de taille sur les PNG sources
+
+```bash
+folder-icon-cli set -f "./MonDossier" -i "./icone.png"
+folder-icon-cli set --folder "Documents" --icon "logo.ico"
+folder-icon-cli convert -i "./image.png" -o "./icon.ico"
+folder-icon-cli convert --icon "photo.png" --output "icon.ico" --sizes 16,32,48
+folder-icon-cli --help                # Manuel d'utilisation complet
+```
+
 ## Installation des outils CLI
 
 ```bash
 # Installation globale (Windows)
-npm install -g .          # Installe dedup, rang-cli et wifi-cli globalement
+npm install -g .          # Installe dedup, rang-cli, wifi-cli et folder-icon-cli globalement
 ```

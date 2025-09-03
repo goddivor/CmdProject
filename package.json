@@ -4,7 +4,8 @@
   "description": "CLI tool for intelligent file deduplication with preview and interaction",
   "main": "dedup.js",
   "bin": {
-    "dedup": "./dedup.cmd"
+    "dedup": "./dedup.cmd",
+    "folder-icon-cli": "./folder-icon-cli.cmd"
   },
   "scripts": {
     "start": "node dedup.js"
@@ -22,6 +23,8 @@
     "cli-table3": "^0.6.3",
     "commander": "^9.4.1",
     "inquirer": "^8.2.6",
-    "ora": "^5.4.1"
+    "ora": "^5.4.1",
+    "sharp": "^0.34.3",
+    "to-ico": "^1.1.5"
   }
 }
