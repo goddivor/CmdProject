@@ -109,15 +109,15 @@ FolderType=Generic
 
     showHelp() {
         console.log(`
-📁 FOLDER ICON CLI - Manuel d'utilisation
-${'='.repeat(50)}
+📁 SETICON - Manuel d'utilisation
+${'='.repeat(34)}
 
 📋 DESCRIPTION:
    Utilitaire en ligne de commande pour changer les icônes de dossiers
    sous Windows avec conversion automatique PNG vers ICO.
 
 🎯 UTILISATION:
-   folder-icon-cli [OPTIONS] [COMMANDES]
+   seticon [OPTIONS] [COMMANDES]
 
 📝 COMMANDES:
    set              Définir l'icône d'un dossier
@@ -135,20 +135,20 @@ ${'='.repeat(50)}
 📋 EXEMPLES D'UTILISATION:
 
    1. Changer l'icône d'un dossier avec un fichier ICO:
-      folder-icon-cli set -f "./MonDossier" -i "./icone.ico"
-      folder-icon-cli set --folder "C:\\Users\\Docs" --icon "icon.ico"
+      seticon set -f "./MonDossier" -i "./icone.ico"
+      seticon set --folder "C:\\Users\\Docs" --icon "icon.ico"
 
    2. Changer l'icône avec un PNG (conversion automatique):
-      folder-icon-cli set -f "./Projet" -i "./logo.png"
-      folder-icon-cli set --folder "./Images" --icon "./favicon.png" --sizes 16,32,48
+      seticon set -f "./Projet" -i "./logo.png"
+      seticon set --folder "./Images" --icon "./favicon.png" --sizes 16,32,48
 
    3. Convertir PNG vers ICO uniquement:
-      folder-icon-cli convert -i "./image.png" -o "./icone.ico"
-      folder-icon-cli convert --icon "logo.png" --output "logo.ico" --sizes 16,32,64,128
+      seticon convert -i "./image.png" -o "./icone.ico"
+      seticon convert --icon "logo.png" --output "logo.ico" --sizes 16,32,64,128
 
    4. Syntaxe simplifiée (rétrocompatibilité):
-      folder-icon-cli "./MonDossier" "./icone.png"
-      folder-icon-cli convert "./image.png" "./icon.ico"
+      seticon "./MonDossier" "./icone.png"
+      seticon convert "./image.png" "./icon.ico"
 
 🔧 FONCTIONNALITÉS:
    ✓ Conversion automatique PNG → ICO si nécessaire
@@ -171,7 +171,7 @@ ${'='.repeat(50)}
    • Les conversions PNG utilisent des tailles standards
 
 🆘 AIDE ET SUPPORT:
-   Pour plus d'informations: folder-icon-cli --help
+   Pour plus d'informations: seticon --help
    Version: 1.0.0
         `);
     }
@@ -295,7 +295,7 @@ async function main() {
             
             if (!options.icon || !options.output) {
                 console.error('❌ Convert command requires --icon and --output parameters');
-                console.log('💡 Example: folder-icon-cli convert -i "image.png" -o "icon.ico"');
+                console.log('💡 Example: seticon convert -i "image.png" -o "icon.ico"');
                 process.exit(1);
             }
             
@@ -305,7 +305,7 @@ async function main() {
         } else if (options.command === 'set') {
             if (!options.folder || !options.icon) {
                 console.error('❌ Set command requires --folder and --icon parameters');
-                console.log('💡 Example: folder-icon-cli set -f "./MyFolder" -i "icon.png"');
+                console.log('💡 Example: seticon set -f "./MyFolder" -i "icon.png"');
                 process.exit(1);
             }
             

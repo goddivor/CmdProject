@@ -5,7 +5,7 @@
   "main": "dedup.js",
   "bin": {
     "dedup": "./dedup.cmd",
-    "folder-icon-cli": "./folder-icon-cli.cmd"
+    "seticon": "./seticon.cmd"
   },
   "scripts": {
     "start": "node dedup.js"
