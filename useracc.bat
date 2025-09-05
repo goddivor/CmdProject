@@ -69,7 +69,7 @@ if not "%2"=="" (
 
 echo ATTENTION: Suppression de l'utilisateur "%usernam%".
 set /p confirm="Confirmer avec OUI: "
-if not /i "%confirm%"=="OUI" (
+if not "%confirm%"=="OUI" (
     echo Suppression annulee.
     goto end_script
 )
