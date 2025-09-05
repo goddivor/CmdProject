@@ -15,12 +15,11 @@ Collection de commandes batch créées pour faciliter diverses tâches système 
 - **opn.bat** - Ouvre un dossier dans l'explorateur Windows
 
 ### Analyse de taille et espace disque
-- **dsize.bat** - Calcule la taille totale de plusieurs répertoires
-- **fsize.bat** - Affiche la taille d'un fichier (utilise xfsize.exe)
-- **ftipe.bat** - Affiche la taille d'un répertoire avec conversion d'unités
+- **dsize.bat** - Calcule la taille totale de plusieurs répertoires avec formatage PowerShell
+- **fsize.bat** - Affiche la taille d'un ou plusieurs fichiers avec support multi-fichiers et formatage automatique
 - **diskfree.bat** - Affiche l'espace libre sur un ou plusieurs disques
-- **freedsk.bat** - Affiche l'espace libre d'un disque spécifique
-- **dsk.bat** - Liste les lecteurs disponibles et leurs types
+- **freedsk.bat** - Affiche l'espace libre d'un disque spécifique avec formatage PowerShell
+- **dsk.bat** - Liste les lecteurs disponibles, leurs types et optionnellement l'espace libre
 
 ### Organisation et tri de fichiers
 - **tri.bat** - Trie automatiquement les fichiers par type/extension
@@ -67,7 +66,10 @@ Exemples d'usage :
 ```batch
 # Outils batch classiques
 elem .                    # Compte les éléments du répertoire courant
-dsize dossier1 dossier2   # Taille de plusieurs dossiers
+dsize dossier1 dossier2   # Taille de plusieurs dossiers avec total
+fsize file1.txt file2.mp4 # Taille de plusieurs fichiers avec total
+freedsk C:\               # Espace libre du lecteur C: formaté
+dsk -s                    # Liste des lecteurs avec espace libre
 wifimap /l                # Liste des réseaux WiFi
 useracc /help             # Aide pour la gestion d'utilisateurs
 
