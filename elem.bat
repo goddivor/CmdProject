@@ -1,75 +1,77 @@
 @echo off
-rem definition des variables
+REM — Passe la console en UTF-8
+chcp 65001 >nul
 
-:restart
-set /a dossier=0
-set /a element=0
-set /a fichier=0
-set rep="%1"
+rem Afficher l'aide si demandée
+if /i "%~1"=="/?" goto show_help
+if /i "%~1"=="--help" goto show_help
 
-rem echo rep : %rep:&=^&%
-rem rem affichage des variables avant modifications
-rem echo %dossier%
-rem echo %fichier%
-rem echo %element%
-rem echo %rep%
+rem Traitement si aucun argument (répertoire courant)
+if "%~1"=="" (
+    call :process_directory "."
+    goto end
+)
 
-rem rem Test des variables avant modifications
-rem set dossier
-rem set fichier
-rem set element
-rem set rep
+@REM echo Analyse des répertoires...
+@REM echo.
 
-rem Grande Modification
+rem Boucle pour traiter chaque répertoire
+:process_all
+if "%~1"=="" goto end
 
-rem Test d'integrite
-if -%1- equ -- (
-	rem echo il na rien mis
-rem modifications
-for %%a in (*) do set /a fichier+=1
-for /d %%b in (*) do set /a dossier+=1
-set /a element=fichier+dossier
-	) else (
-	rem echo il a mis quelque chose
-rem modifications
-for %%a in ("%rep%"\*) do set /a fichier+=1
-for /d %%b in ("%rep%"\*) do set /a dossier+=1
-set /a element=fichier+dossier
-	)
-
-
-rem affichage des variables apres modifications
-rem echo    %dossier% dossier
-rem echo    %fichier% fichier
-rem echo    %element% element
-rem OU
-echo   [%dossier%] dossier(s)   [%fichier%] fichier(s)  [%element%] element(s)
-rem echo %rep%
-
-rem rem Test des variables apres modification
-rem set dossier
-rem set fichier
-rem set element
-rem set rep
-
-:test
+call :process_directory "%~1"
 shift
-if /i -%1- equ -- (
-	goto fin
-	) else (
-	goto restart
-	)
-:fintest
+goto process_all
 
-:fin
-rem Supression des variables
-set dossier=
-set fichier=
-set element=
-set rep=
+:process_directory
+set target_dir=%~1
 
-rem rem Test des variables apres suppression
-rem set dossier
-rem set fichier
-rem set element
-rem set rep
+rem Vérifier si le répertoire existe
+if not exist "%target_dir%" (
+    echo Erreur: Le répertoire "%target_dir%" n'existe pas
+    exit /b 1
+)
+
+rem Initialiser les compteurs
+set dirs=0
+set files=0
+
+rem Compter les dossiers
+for /d %%d in ("%target_dir%\*") do set /a dirs+=1
+
+rem Compter les fichiers
+for %%f in ("%target_dir%\*") do (
+    if not exist "%%f\*" set /a files+=1
+)
+
+set /a elements=dirs+files
+
+rem Afficher les résultats pour ce répertoire
+@REM if "%target_dir%"=="." (
+@REM     echo Répertoire courant:
+@REM ) else (
+@REM     echo Répertoire "%target_dir%":
+@REM )
+echo   [%dirs%] dossier(s)   [%files%] fichier(s)   [%elements%] element(s)
+echo.
+
+exit /b 0
+
+:end
+exit /b 0
+
+:show_help
+echo Usage: %~n0 [répertoire1] [répertoire2] [...]
+echo.
+echo Description:
+echo   Compte les fichiers et dossiers dans un ou plusieurs répertoires
+echo.
+echo Options:
+echo(/?, --help     Affiche cette aide
+echo.
+echo Exemples:
+echo   %~n0                  Analyse le répertoire courant
+echo   %~n0 C:\Windows       Analyse le répertoire C:\Windows
+echo   %~n0 . Documents      Analyse le répertoire courant et Documents
+echo.
+exit /b 0
