@@ -225,7 +225,7 @@ if not "%2"=="" (
     set /p usernam="Utilisateur a initialiser: "
 )
 
-net user "%usernam%" /logonpasswordchg:yes
+echo.|net user %username% *>nul
 if %errorlevel% equ 0 (
     echo Utilisateur initialise.
 ) else (
