@@ -1,50 +1,265 @@
 @echo off
 
-set arg1=%1
-set arg2=%2
+rem Afficher l'aide si aucun argument
+if "%1"=="" goto show_help
 
-if "%arg1%"=="/add" (
-    set /p usernam="Enter the username to create: "
-    set /p pwd="Do you want to set a password? (Yes/No): "
+rem Traitement des commandes
+if /i "%1"=="/add" goto add_user
+if /i "%1"=="/del" goto delete_user
+if /i "%1"=="/mod" goto modify_user
+if /i "%1"=="/rename" goto rename_user
+if /i "%1"=="/list" goto list_users
+if /i "%1"=="/info" goto user_info
+if /i "%1"=="/enable" goto enable_user
+if /i "%1"=="/disable" goto disable_user
+if /i "%1"=="/groups" goto manage_groups
+if /i "%1"=="/ini" goto initialize_user
+if /i "%1"=="/help" goto show_help
+if /i "%1"=="/?" goto show_help
 
-    if /i "%pwd%"=="Yes" (
-        set /p password="Enter the password: "
-        net user %usernam% %password% /add
-    ) else (
-        net user %usernam% /add
-    )
+echo ERREUR: Commande inconnue "%1"
+echo Utilisez /help pour voir les commandes disponibles.
+goto end_script
 
-    set /p admin="Add this user to the Administrators group? (Yes/No): "
-    if /i "%admin%"=="Yes" (
-        net localgroup Administrators %usernam% /add
-    )
-) else if "%arg1%"=="/del" (
-    set /p usernam="Enter the username to delete: "
-    net user %usernam% /delete
-) else if "%arg1%"=="/mod" (
-    set /p usernam="Enter the username to modify: "
-    set /p password="Enter the new password: "
-    net user %usernam% %password%
-) else if "%arg1%"=="/rename" (
-    set /p oldname="Enter the current username: "
-    set /p newname="Enter the new username: "
-    wmic useraccount where name='%oldname%' rename '%newname%'
-) else if "%arg1%"=="/list" (
-    net user
-) else if "%arg1%"=="/ini" (
-    set /p usernam="Enter the username to initialize: "
-    echo.|net user %usernam% *>nul
-) else if "%arg1%"=="/help" (
-    echo Available commands:
-    echo /add - Add a new user
-    echo /del - Delete a user
-    echo /mod - Modify a user's password
-    echo /rename - Rename a user
-    echo /list - List all users
-    echo /ini - Initialize a user
-    echo /help - Display this help message
+:add_user
+echo ==========================================
+echo Creation d'un nouvel utilisateur
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set usernam=%2
 ) else (
-    echo Unknown command.
+    set /p usernam="Nom d'utilisateur a creer: "
 )
 
-pause
+set /p pwd="Definir un mot de passe? (O/N): "
+if /i "%pwd%"=="O" (
+    set /p password="Mot de passe: "
+    net user "%usernam%" "%password%" /add
+) else (
+    net user "%usernam%" /add
+)
+
+if %errorlevel% neq 0 (
+    echo ERREUR: Impossible de creer l'utilisateur.
+    goto end_script
+)
+
+echo Utilisateur "%usernam%" cree avec succes.
+
+set /p admin="Ajouter aux Administrateurs? (O/N): "
+if /i "%admin%"=="O" (
+    net localgroup Administrators "%usernam%" /add
+)
+
+goto end_script
+
+:delete_user
+echo ==========================================
+echo Suppression d'un utilisateur
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Nom d'utilisateur a supprimer: "
+)
+
+echo ATTENTION: Suppression de l'utilisateur "%usernam%".
+set /p confirm="Confirmer avec OUI: "
+if not /i "%confirm%"=="OUI" (
+    echo Suppression annulee.
+    goto end_script
+)
+
+net user "%usernam%" /delete
+if %errorlevel% equ 0 (
+    echo Utilisateur supprime avec succes.
+) else (
+    echo ERREUR: Impossible de supprimer l'utilisateur.
+)
+
+goto end_script
+
+:modify_user
+echo ==========================================
+echo Modification du mot de passe
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Nom d'utilisateur a modifier: "
+)
+
+set /p password="Nouveau mot de passe: "
+net user "%usernam%" "%password%"
+
+if %errorlevel% equ 0 (
+    echo Mot de passe modifie avec succes.
+) else (
+    echo ERREUR: Impossible de modifier le mot de passe.
+)
+
+goto end_script
+
+:rename_user
+echo ==========================================
+echo Renommage d'un utilisateur
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set oldname=%2
+    if not "%3"=="" (
+        set newname=%3
+    ) else (
+        set /p newname="Nouveau nom: "
+    )
+) else (
+    set /p oldname="Nom actuel: "
+    set /p newname="Nouveau nom: "
+)
+
+wmic useraccount where "name='%oldname%'" rename "%newname%"
+if %errorlevel% equ 0 (
+    echo Utilisateur renomme avec succes.
+) else (
+    echo ERREUR: Impossible de renommer.
+)
+
+goto end_script
+
+:list_users
+echo ==========================================
+echo Liste des utilisateurs
+echo ==========================================
+echo.
+
+net user
+
+goto end_script
+
+:user_info
+echo ==========================================
+echo Informations utilisateur
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Nom d'utilisateur: "
+)
+
+net user "%usernam%"
+
+goto end_script
+
+:enable_user
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Utilisateur a activer: "
+)
+
+net user "%usernam%" /active:yes
+if %errorlevel% equ 0 (
+    echo Utilisateur active.
+) else (
+    echo ERREUR: Impossible d'activer.
+)
+
+goto end_script
+
+:disable_user
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Utilisateur a desactiver: "
+)
+
+net user "%usernam%" /active:no
+if %errorlevel% equ 0 (
+    echo Utilisateur desactive.
+) else (
+    echo ERREUR: Impossible de desactiver.
+)
+
+goto end_script
+
+:manage_groups
+echo ==========================================
+echo Gestion des groupes
+echo ==========================================
+echo.
+
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Nom d'utilisateur: "
+)
+
+echo Groupes disponibles:
+net localgroup
+echo.
+
+set /p action="Ajouter (A) ou Retirer (R)? "
+set /p group="Nom du groupe: "
+
+if /i "%action%"=="A" (
+    net localgroup "%group%" "%usernam%" /add
+) else if /i "%action%"=="R" (
+    net localgroup "%group%" "%usernam%" /delete
+)
+
+goto end_script
+
+:initialize_user
+if not "%2"=="" (
+    set usernam=%2
+) else (
+    set /p usernam="Utilisateur a initialiser: "
+)
+
+net user "%usernam%" /logonpasswordchg:yes
+if %errorlevel% equ 0 (
+    echo Utilisateur initialise.
+) else (
+    echo ERREUR: Impossible d'initialiser.
+)
+
+goto end_script
+
+:show_help
+echo.
+echo ==========================================
+echo Gestionnaire de comptes utilisateurs
+echo ==========================================
+echo.
+echo Usage: useracc [commande] [utilisateur]
+echo.
+echo COMMANDES:
+echo   /add [nom]           Creer utilisateur
+echo   /del [nom]           Supprimer utilisateur
+echo   /mod [nom]           Modifier mot de passe
+echo   /rename [old] [new]  Renommer utilisateur
+echo   /list                Lister utilisateurs
+echo   /info [nom]          Infos utilisateur
+echo   /enable [nom]        Activer compte
+echo   /disable [nom]       Desactiver compte
+echo   /groups [nom]        Gerer groupes
+echo   /ini [nom]           Initialiser mot de passe
+echo   /help ou /?          Cette aide
+echo.
+echo EXEMPLES:
+echo   useracc /add john
+echo   useracc /del john
+echo   useracc /info john
+echo.
+
+:end_script
+exit /b 0
